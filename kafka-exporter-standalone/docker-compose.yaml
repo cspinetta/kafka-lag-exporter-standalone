@@ -1,0 +1,70 @@
+version: "3.6"
+
+networks:
+  kafka_lag_exporter_network:
+
+volumes:
+  prometheus_data: {}
+  grafana_data: {}
+
+services:
+  kafka-lag-exporter:
+    image: lightbend/kafka-lag-exporter:0.4.0
+    container_name: kafka-lag-exporter
+    command: ["/opt/docker/bin/kafka-lag-exporter",
+              "-Dconfig.file=/opt/docker/conf/application.conf",
+              "-Dlogback.configurationFile=/opt/docker/conf/logback.xml"]
+    networks:
+      - kafka_lag_exporter_network
+    ports:
+      - '8000:8000'
+    volumes:
+      - './kafka-lag-exporter:/opt/docker/conf/'
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+  grafana:
+    image: grafana/grafana:7.0.4
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - kafka_lag_exporter_network
+    volumes:
+      - grafana_data:/var/lib/grafana:rw
+      - ./grafana/custom.ini:/etc/grafana/custom.ini:ro
+      - ./grafana/provisioning/:/etc/grafana/provisioning/
+    environment:
+      - GF_PATHS_CONFIG=/etc/grafana/custom.ini
+    restart: always
+    depends_on:
+      - prometheus
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "10"
+  prometheus:
+    container_name: prometheus
+    image: prom/prometheus:v2.19.0
+    ports:
+      - 9090:9090
+    restart: always
+    depends_on:
+      - kafka-lag-exporter
+    networks:
+      - kafka_lag_exporter_network
+    volumes:
+      - ./prometheus/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.route-prefix=/'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--storage.tsdb.retention.time=24h'
+      - '--web.enable-admin-api'
+      - '--web.enable-lifecycle'
