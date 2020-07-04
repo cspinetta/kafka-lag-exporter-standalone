@@ -1,11 +1,14 @@
 # Kafka Lag Exporter Standalone
 
-A docker compose with [Kafka Lag Exporter] + [Prometheus] + [Grafana] + a properly [Dashboard](https://github.com/lightbend/kafka-lag-exporter/tree/master/grafana) to view the latency of your Apache Kafka consumer groups. Useful tool for monitoring and troubleshooting a Kafka deployment.
+A docker compose with [Kafka Lag Exporter] + [Prometheus] + [Grafana] + a [Dashboard](https://github.com/lightbend/kafka-lag-exporter/tree/master/grafana) to view the latency of your Apache Kafka consumer groups. Useful tool for monitoring and troubleshooting a Kafka deployment in a few easy steps.
 
-[Kafka Lag Exporter] has a simple and easy installation based on `Helm`.
-But a lot of people don't use k8s, which means they have to prepare a custom installation with a docker compose or something else. This repo has the all necessary to install and start up a [Kafka Lag Exporter] in standalone fashion, on few steps.
+### Why this docker compose?
 
-### Grafana dashboards
+This repo brings [Kafka Lag Exporter], [Prometheus] and [Grafana] together in one single docker compose, so you can quickly start it up and start analyzing an issue on a Kafka deployment. Otherwise, you would need to start and configure each piece separatly, which could be a bit cumbersome.
+
+It aims to provide a quick installation for troubleshooting and not a final installation for permanent monitoring. It's perfect if you are facing an issue in production and need more visibility about what is happening internally in kafka.
+
+### Example use cases
 
 
 #### Consumer group lag in seconds
