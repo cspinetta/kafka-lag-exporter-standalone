@@ -34,12 +34,12 @@ it shows the consumer group lag in seconds and messages/events (the difference b
 1. Download your desired version and unpack it:
 
 ```bash
-curl -fsSL -o kafka-lag-exporter-standalone.tar.gz [url to release]
+curl -fsSL -o kafka-lag-exporter-standalone.tar.gz https://github.com/cspinetta/kafka-lag-exporter-standalone/releases/download/0.0.1/kafka-lag-exporter-standalone-0.0.1.tar
 tar -xf kafka-lag-exporter-standalone.tar.gz
 ```
 
 2. Specify kafka nodes on [kafka-exporter-standalone/kafka-lag-exporter/application.conf].
-3. Run with docker compose: `docker-compose up -f kafka-exporter-standalone/docker-compose.yaml`.
+3. Run with docker compose: `docker-compose -f kafka-exporter-standalone/docker-compose.yaml up`.
 
 Then you can open the Grafana webapp exposed at port `3000` and navigate to the dashboard **Kafka Lag Exporter**.
 
