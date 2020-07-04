@@ -8,7 +8,7 @@ But a lot of people don't use k8s, which means they have to prepare a custom ins
 ### Grafana dashboards
 
 
-####Consumer group lag in seconds
+#### Consumer group lag in seconds
 
 ![Consumer Groups Time Lag](docs/consumer_group_lag_seconds.png)
 
@@ -18,7 +18,7 @@ and we can see it by consumer group.
 This example was taken from a Kafka-Connect that commits every 30 minutes if everything goes well, 
 if we analize it we can say that some consumer groups by some reason fail on commit.
 
-####Consumers group lag in seconds and offsets
+#### Consumers group lag in seconds and offsets
 
 
 ![Consumer Group Time and Events Lag](docs/consumer_group_seconds_and_events_lag.png)
