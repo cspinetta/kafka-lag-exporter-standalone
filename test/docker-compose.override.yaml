@@ -1,0 +1,9 @@
+# Override configuration for testing
+# This file is used when running: docker compose -f ../kafka-exporter-standalone/docker-compose.yaml -f docker-compose.override.yaml
+
+services:
+  kafka-lag-exporter:
+    volumes:
+      - './application.local.conf:/opt/docker/conf/application.conf:ro'
+      - '../kafka-exporter-standalone/kafka-lag-exporter/logback.xml:/opt/docker/conf/logback.xml:ro'
+

@@ -1,4 +1,4 @@
-version: "3.6"
+version: "3.9"
 
 networks:
   kafka_lag_exporter_network:
@@ -9,7 +9,7 @@ volumes:
 
 services:
   kafka-lag-exporter:
-    image: lightbend/kafka-lag-exporter:0.4.0
+    image: seglo/kafka-lag-exporter:0.8.2
     container_name: kafka-lag-exporter
     command: ["/opt/docker/bin/kafka-lag-exporter",
               "-Dconfig.file=/opt/docker/conf/application.conf",
@@ -25,8 +25,9 @@ services:
       options:
         max-size: "10m"
         max-file: "10"
+    restart: unless-stopped
   grafana:
-    image: grafana/grafana:7.0.4
+    image: grafana/grafana:11.1.0
     container_name: grafana
     ports:
       - "3000:3000"
@@ -38,7 +39,7 @@ services:
       - ./grafana/provisioning/:/etc/grafana/provisioning/
     environment:
       - GF_PATHS_CONFIG=/etc/grafana/custom.ini
-    restart: always
+    restart: unless-stopped
     depends_on:
       - prometheus
     logging:
@@ -48,10 +49,10 @@ services:
         max-file: "10"
   prometheus:
     container_name: prometheus
-    image: prom/prometheus:v2.19.0
+    image: prom/prometheus:v2.51.2
     ports:
       - 9090:9090
-    restart: always
+    restart: unless-stopped
     depends_on:
       - kafka-lag-exporter
     networks:
